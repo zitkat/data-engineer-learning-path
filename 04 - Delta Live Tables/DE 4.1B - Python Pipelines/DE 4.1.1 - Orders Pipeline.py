@@ -1,4 +1,84 @@
 # Databricks notebook source
+# MAGIC %pip install dlt-with-debug
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Cells contianing %pip _must_ be at the top of the notebook (even before markdown) otherwise pipeline complains.
+# MAGIC ```
+# MAGIC java.lang.RuntimeException: Found cells containing %pip install that are not at the top of the notebook for '/Repos/tomas.
+# MAGIC zitka@datasentics.com/data-engineer-learning-path/04 - Delta Live Tables/DE 4.1B - Python Pipelines/DE 4.1.1 - Orders 
+# MAGIC Pipeline'. Move all %pip install cells to the start of the notebook.
+# MAGIC
+# MAGIC at com.databricks.pipelines.execution.service.PipelineRunnable$.$anonfun$loadPythonGraph$1(PipelineGraphLoader.scala:542)
+# MAGIC at scala.collection.TraversableLike.$anonfun$map$1(TraversableLike.scala:286)
+# MAGIC at scala.collection.mutable.ResizableArray.foreach(ResizableArray.scala:62)
+# MAGIC at scala.collection.mutable.ResizableArray.foreach$(ResizableArray.scala:55)
+# MAGIC at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:49)
+# MAGIC at scala.collection.TraversableLike.map(TraversableLike.scala:286)
+# MAGIC at scala.collection.TraversableLike.map$(TraversableLike.scala:279)
+# MAGIC at scala.collection.AbstractTraversable.map(Traversable.scala:108)
+# MAGIC at com.databricks.pipelines.execution.service.PipelineRunnable$.loadPythonGraph(PipelineGraphLoader.scala:531)
+# MAGIC at com.databricks.pipelines.execution.service.PipelineGraphLoader.loadGraph(PipelineGraphLoader.scala:312)
+# MAGIC at com.databricks.pipelines.execution.service.PipelineGraphLoader.loadGraph(PipelineGraphLoader.scala:194)
+# MAGIC at com.databricks.pipelines.execution.service.DLTComputeRunnableContext.loadGraph(DLTComputeRunnableContext.scala:94)
+# MAGIC at com.databricks.pipelines.execution.core.UpdateExecution.$anonfun$initializeAndLoadGraph$1(UpdateExecution.scala:333)
+# MAGIC at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+# MAGIC at com.databricks.pipelines.execution.core.monitoring.DeltaPipelinesUsageLogging.$anonfun$recordPipelinesOperation$3(DeltaPipelinesUsageLogging.scala:118)
+# MAGIC at com.databricks.pipelines.common.monitoring.OperationStatusReporter.executeWithPeriodicReporting(OperationStatusReporter.scala:120)
+# MAGIC at com.databricks.pipelines.common.monitoring.OperationStatusReporter$.executeWithPeriodicReporting(OperationStatusReporter.scala:160)
+# MAGIC at com.databricks.pipelines.execution.core.monitoring.DeltaPipelinesUsageLogging.$anonfun$recordPipelinesOperation$6(DeltaPipelinesUsageLogging.scala:137)
+# MAGIC at com.databricks.logging.UsageLogging.$anonfun$recordOperation$1(UsageLogging.scala:541)
+# MAGIC at com.databricks.logging.UsageLogging.executeThunkAndCaptureResultTags$1(UsageLogging.scala:636)
+# MAGIC at com.databricks.logging.UsageLogging.$anonfun$recordOperationWithResultTags$4(UsageLogging.scala:657)
+# MAGIC at com.databricks.logging.UsageLogging.$anonfun$withAttributionContext$1(UsageLogging.scala:398)
+# MAGIC at scala.util.DynamicVariable.withValue(DynamicVariable.scala:62)
+# MAGIC at com.databricks.logging.AttributionContext$.withValue(AttributionContext.scala:147)
+# MAGIC at com.databricks.logging.UsageLogging.withAttributionContext(UsageLogging.scala:396)
+# MAGIC at com.databricks.logging.UsageLogging.withAttributionContext$(UsageLogging.scala:393)
+# MAGIC at com.databricks.pipelines.execution.core.monitoring.PublicLogging.withAttributionContext(DeltaPipelinesUsageLogging.scala:25)
+# MAGIC at com.databricks.logging.UsageLogging.withAttributionTags(UsageLogging.scala:441)
+# MAGIC at com.databricks.logging.UsageLogging.withAttributionTags$(UsageLogging.scala:426)
+# MAGIC at com.databricks.pipelines.execution.core.monitoring.PublicLogging.withAttributionTags(DeltaPipelinesUsageLogging.scala:25)
+# MAGIC at com.databricks.logging.UsageLogging.recordOperationWithResultTags(UsageLogging.scala:631)
+# MAGIC at com.databricks.logging.UsageLogging.recordOperationWithResultTags$(UsageLogging.scala:550)
+# MAGIC at com.databricks.pipelines.execution.core.monitoring.PublicLogging.recordOperationWithResultTags(DeltaPipelinesUsageLogging.scala:25)
+# MAGIC at com.databricks.logging.UsageLogging.recordOperation(UsageLogging.scala:541)
+# MAGIC at com.databricks.logging.UsageLogging.recordOperation$(UsageLogging.scala:511)
+# MAGIC at com.databricks.pipelines.execution.core.monitoring.PublicLogging.recordOperation(DeltaPipelinesUsageLogging.scala:25)
+# MAGIC at com.databricks.pipelines.execution.core.monitoring.PublicLogging.recordOperation0(DeltaPipelinesUsageLogging.scala:60)
+# MAGIC at com.databricks.pipelines.execution.core.monitoring.DeltaPipelinesUsageLogging.$anonfun$recordPipelinesOperation$1(DeltaPipelinesUsageLogging.scala:130)
+# MAGIC at com.databricks.spark.util.FrameProfiler$.record(FrameProfiler.scala:80)
+# MAGIC at com.databricks.pipelines.execution.core.monitoring.DeltaPipelinesUsageLogging.recordPipelinesOperation(DeltaPipelinesUsageLogging.scala:107)
+# MAGIC at com.databricks.pipelines.execution.core.monitoring.DeltaPipelinesUsageLogging.recordPipelinesOperation$(DeltaPipelinesUsageLogging.scala:102)
+# MAGIC at com.databricks.pipelines.execution.core.UpdateExecution.recordPipelinesOperation(UpdateExecution.scala:52)
+# MAGIC at com.databricks.pipelines.execution.core.UpdateExecution.executeStage(UpdateExecution.scala:249)
+# MAGIC at com.databricks.pipelines.execution.core.UpdateExecution.initializeAndLoadGraph(UpdateExecution.scala:329)
+# MAGIC at com.databricks.pipelines.execution.core.UpdateExecution.executeUpdate(UpdateExecution.scala:313)
+# MAGIC at com.databricks.pipelines.execution.core.UpdateExecution.$anonfun$start$3(UpdateExecution.scala:119)
+# MAGIC at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+# MAGIC at com.databricks.pipelines.execution.core.WorkloadAttributionContextUtils$.runWithDLTWorkloadTags(WorkloadAttributionContextUtils_DBR_12_Minus.scala:6)
+# MAGIC at com.databricks.pipelines.execution.core.UpdateExecution.$anonfun$start$1(UpdateExecution.scala:118)
+# MAGIC at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+# MAGIC at com.databricks.pipelines.execution.core.UCContextCompanion$OptionUCContextHelper.runWithNewUCSIfAvailable(BaseUCContext.scala:264)
+# MAGIC at com.databricks.pipelines.execution.core.UpdateExecution.start(UpdateExecution.scala:115)
+# MAGIC at com.databricks.pipelines.execution.service.ExecutionBackend$$anon$2.run(ExecutionBackend.scala:676)
+# MAGIC at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+# MAGIC at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+# MAGIC at org.apache.spark.util.threads.SparkThreadLocalCapturingRunnable.$anonfun$run$1(SparkThreadLocalForwardingThreadPoolExecutor.scala:110)
+# MAGIC at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)
+# MAGIC at com.databricks.unity.UCSEphemeralState$Handle.runWith(UCSEphemeralState.scala:41)
+# MAGIC at org.apache.spark.util.threads.SparkThreadLocalCapturingHelper.runWithCaptured(SparkThreadLocalForwardingThreadPoolExecutor.scala:74)
+# MAGIC at org.apache.spark.util.threads.SparkThreadLocalCapturingHelper.runWithCaptured$(SparkThreadLocalForwardingThreadPoolExecutor.scala:60)
+# MAGIC at org.apache.spark.util.threads.SparkThreadLocalCapturingRunnable.runWithCaptured(SparkThreadLocalForwardingThreadPoolExecutor.scala:107)
+# MAGIC at org.apache.spark.util.threads.SparkThreadLocalCapturingRunnable.run(SparkThreadLocalForwardingThreadPoolExecutor.scala:110)
+# MAGIC at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+# MAGIC at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+# MAGIC at java.lang.Thread.run(Thread.java:750)
+# MAGIC ```
+
+# COMMAND ----------
+
 # MAGIC %md-sandbox
 # MAGIC
 # MAGIC <div style="text-align: center; line-height: 0; padding-top: 9px;">
@@ -59,10 +139,17 @@
 
 # COMMAND ----------
 
-import dlt
-import pyspark.sql.functions as F
+# https://github.com/souvik-databricks/dlt-with-debug
+from dlt_with_debug import dltwithdebug, pipeline_id, showoutput
 
-source = spark.conf.get("source")
+if pipeline_id:
+  import dlt
+  source = spark.conf.get("source")
+else:
+  from dlt_with_debug import dlt
+  source = "dbfs:/mnt/dbacademy-users/tomas.zitka@datasentics.com/data-engineer-learning-path/pipeline_demo/stream-source"
+
+import pyspark.sql.functions as F
 
 # COMMAND ----------
 
@@ -109,11 +196,12 @@ source = spark.conf.get("source")
 
 # COMMAND ----------
 
-@dlt.table
+@dlt.create_table()
+@dltwithdebug(globals())
 def orders_bronze():
     return (
         spark.readStream
-            .format("cloudFiles")
+            .format("cloudFiles")  #cloudFiles format might not work with dlt_with_debug
             .option("cloudFiles.format", "json")
             .option("cloudFiles.inferColumnTypes", True)
             .load(f"{source}/orders")
@@ -123,6 +211,10 @@ def orders_bronze():
                 "*"
             )
     )
+
+# COMMAND ----------
+
+showoutput(orders_bronze)
 
 # COMMAND ----------
 
@@ -164,10 +256,11 @@ def orders_bronze():
 
 # COMMAND ----------
 
-@dlt.table(
+@dlt.create_table(
     comment = "Append only orders with valid timestamps",
     table_properties = {"quality": "silver"})
 @dlt.expect_or_fail("valid_date", F.col("order_timestamp") > "2021-01-01")  # requires DLT Advanced , c.f. https://www.databricks.com/product/pricing/delta-live
+@dltwithdebug(globals())
 def orders_silver():
     return (
         dlt.read_stream("orders_bronze")
@@ -205,7 +298,8 @@ def orders_silver():
 
 # COMMAND ----------
 
-@dlt.table
+@dlt.create_table()
+@dltwithdebug(globals())
 def orders_by_date():
     return (
         dlt.read("orders_silver")
