@@ -50,11 +50,18 @@
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC DESCRIBE DETAIL orders_bronze
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC
 # MAGIC Recall that **`orders_bronze`** was defined as a streaming live table in DLT, but our results here are static.
 # MAGIC
 # MAGIC Because DLT uses Delta Lake to store all tables, each time a query is executed, we will always return the most recent version of the table. But queries outside of DLT will return snapshot results from DLT tables, regardless of how they were defined.
+# MAGIC
+# MAGIC _And the snapshot is the most recent version, or what version is returned?_
 
 # COMMAND ----------
 
